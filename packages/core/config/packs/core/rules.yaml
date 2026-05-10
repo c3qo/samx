@@ -1,0 +1,107 @@
+scan:
+  project:
+    - AGENTS.md
+    - mcp.json
+    - "*helper.md"
+    - "*script.md"
+    - "*tool.md"
+    - package.json
+  home:
+    - mcp.json
+  ignoredDirectories:
+    - "**/node_modules/**"
+    - "**/.git/**"
+    - "**/.pnpm-store/**"
+    - "**/.yarn/**"
+    - "**/.cache/**"
+    - "**/dist/**"
+    - "**/build/**"
+    - "**/coverage/**"
+    - "**/.next/**"
+    - "**/out/**"
+    - "**/generated/**"
+
+classify:
+  - when:
+      relativePath: mcp.json
+    kind: mcp-server
+    nameFrom: constant
+    name: mcp
+  - when:
+      fileName: AGENTS.md
+    kind: profile
+    nameFrom: fileStem
+  - when:
+      fileName: package.json
+      packageHasBin: true
+    kind: bundle
+    nameFrom: parentDirectory
+
+parse:
+  markdownFrontmatterKinds: [skill, rule]
+  mcpJsonKinds: [mcp-server]
+  profileKinds: [profile]
+  packageJsonKinds: [bundle]
+
+inference:
+  commands: [git, gh, rg, jq, curl, wget, node, python, docker, kubectl, aws]
+  env: [GITHUB_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, AWS_ACCESS_KEY_ID, SECRET, PASSWORD]
+  networkCommands: [curl, wget]
+  filesystem:
+    - value: .env
+      pattern: '(^|[^\w.-])\.env([^\w.-]|$)'
+    - value: ~/.ssh
+      pattern: '~\/\.ssh(?:\/|\b)'
+    - value: /Users/
+      pattern: '\/Users\/'
+    - value: ~/
+      pattern: '~\/(?!\.ssh(?:\/|\b))'
+    - value: /home/
+      pattern: '\/home\/'
+  shellRisks:
+    - value: curl | bash
+      severity: high
+      pattern: '\bcurl\b[^\n|]*\|\s*bash\b'
+    - value: wget | sh
+      severity: high
+      pattern: '\bwget\b[^\n|]*\|\s*sh\b'
+    - value: rm -rf
+      severity: high
+      pattern: '\brm\s+-rf\b'
+    - value: chmod +x
+      severity: medium
+      pattern: '\bchmod\s+\+x\b'
+    - value: eval
+      severity: high
+      pattern: '\beval\b'
+    - value: sudo
+      severity: high
+      pattern: '\bsudo\b'
+    - value: ssh
+      severity: medium
+      pattern: '\bssh\b'
+    - value: scp
+      severity: medium
+      pattern: '\bscp\b'
+  broadMcpFilesystemRoots: ["/", /Users, /Users/, /home, /home/, "~", "~/"]
+
+probes:
+  safeCommands: [git, gh, rg, jq, curl, wget, node, python, docker, kubectl, aws, npx]
+
+linkTargets:
+  codex:
+    displayName: Codex
+    instructions:
+      mode: agents-md-section
+      output: AGENTS.md
+      kinds: [agent]
+    capabilities:
+      skill:
+        mode: directory-symlink
+        root: .agents/skills
+        entry: SKILL.md
+        nameFrom: aliasOrCapabilityId
+      mcp:
+        mode: mcp-toml-merge
+        output: .codex/config.toml
+        tablePath: [mcp_servers]

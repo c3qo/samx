@@ -1,0 +1,21 @@
+scan:
+  project:
+    - .cursor/rules/**/*.mdc
+    - .cursor/mcp.json
+  home:
+    - .cursor/rules/**/*.mdc
+    - .cursor/mcp.json
+
+classify:
+  - when:
+      extension: .mdc
+      pathPrefix: .cursor/rules/
+    kind: rule
+    sourceTool: cursor
+    nameFrom: fileStem
+  - when:
+      relativePath: .cursor/mcp.json
+    kind: mcp-server
+    sourceTool: cursor
+    nameFrom: constant
+    name: mcp

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "e2e-mcp": {
+      "command": "node",
+      "args": ["e2e-mcp-server.js"],
+      "env": {
+        "SAMX_E2E_MCP": "ok"
+      }
+    }
+  }
+}

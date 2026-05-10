@@ -1,0 +1,59 @@
+{
+  "name": "@c3qo/samx",
+  "version": "0.1.0-beta.0",
+  "description": "Local-first package and bundle manager for AI development extensions.",
+  "type": "module",
+  "bin": {
+    "samx": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "cli",
+    "mcp",
+    "skills"
+  ],
+  "license": "MIT",
+  "author": "c3qo",
+  "homepage": "https://github.com/c3qo/samx#readme",
+  "bugs": {
+    "url": "https://github.com/c3qo/samx/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c3qo/samx.git",
+    "directory": "packages/cli"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "beta"
+  },
+  "scripts": {
+    "build": "tsup --config tsup.config.ts && node scripts/copy-assets.mjs && node scripts/link-bin.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "pnpm build"
+  },
+  "devDependencies": {
+    "@c3qo/samx-core": "workspace:*",
+    "@types/react": "^19.2.14",
+    "cac": "^6.7.14",
+    "ink-testing-library": "^4.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "ink": "^7.0.3",
+    "ink-select-input": "^6.2.0",
+    "ink-text-input": "^6.0.0",
+    "react": "^19.2.6",
+    "update-notifier": "^7.3.1"
+  }
+}

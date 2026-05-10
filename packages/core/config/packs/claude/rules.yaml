@@ -1,0 +1,54 @@
+scan:
+  project:
+    - .claude/skills/**/SKILL.md
+    - CLAUDE.md
+  home:
+    - .claude/skills/**/SKILL.md
+    - .claude/CLAUDE.md
+
+classify:
+  - when:
+      fileName: SKILL.md
+      pathPrefix: .claude/skills/
+    kind: skill
+    sourceTool: claude
+    nameFrom: parentDirectory
+  - when:
+      fileName: CLAUDE.md
+    kind: profile
+    sourceTool: claude
+    nameFrom: fileStem
+
+groups:
+  - label: superpower skill
+    when:
+      sourceTool: claude
+      kind: skill
+      pathIncludes: /superpowers/
+  - label: gstack skill
+    when:
+      sourceTool: claude
+      kind: skill
+      pathIncludes: /gstack/
+
+linkTargets:
+  claude:
+    displayName: Claude
+    hooks:
+      mode: claude-settings-hooks
+      settings: .claude/settings.json
+      allowedExtensions: [.json]
+    capabilities:
+      skill:
+        mode: directory-symlink
+        root: .claude/skills
+        entry: SKILL.md
+        nameFrom: aliasOrCapabilityId
+      agent:
+        mode: directory-symlink
+        root: .claude/agents
+        entry: AGENT.md
+        nameFrom: aliasOrCapabilityId
+      mcp:
+        mode: mcp-json-merge
+        output: .mcp.json

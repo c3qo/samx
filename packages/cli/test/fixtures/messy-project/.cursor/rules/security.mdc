@@ -1,0 +1,11 @@
+---
+description: Security review rule for TypeScript changes.
+globs:
+  - "**/*.ts"
+alwaysApply: true
+manual: false
+---
+
+# Security Rule
+
+Check authentication boundaries, filesystem access, and shell execution before approving changes.

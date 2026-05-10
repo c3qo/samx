@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+.DS_Store
+
+docs/
+
+.opencode/
+.claude/
+.agent/
+.agents/
+
+.env
+.env.*
+*.log

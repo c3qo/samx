@@ -1,0 +1,4 @@
+id: core
+name: Core SAMX
+version: 1
+description: Generic SAMX patterns shared across tools.

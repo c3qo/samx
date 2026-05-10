@@ -1,0 +1,17 @@
+linkTargets:
+  kiro:
+    displayName: Kiro
+    capabilities:
+      skill:
+        mode: directory-symlink
+        root: .kiro/skills
+        entry: SKILL.md
+        nameFrom: aliasOrCapabilityId
+      agent:
+        mode: directory-symlink
+        root: .kiro/agents
+        entry: AGENT.md
+        nameFrom: aliasOrCapabilityId
+      mcp:
+        mode: mcp-json-merge
+        output: .kiro/mcp.json

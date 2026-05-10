@@ -1,0 +1,45 @@
+scan:
+  project:
+    - .opencode/**/*
+  home:
+    - .config/opencode/**/*
+
+classify:
+  - when:
+      fileName: SKILL.md
+      pathPrefix: .opencode/
+    kind: skill
+    sourceTool: opencode
+    nameFrom: parentDirectory
+  - when:
+      fileName: SKILL.md
+      pathPrefix: .config/opencode/
+    kind: skill
+    sourceTool: opencode
+    nameFrom: parentDirectory
+
+linkTargets:
+  opencode:
+    displayName: OpenCode
+    allowLegacySkillFileRecords: true
+    hooks:
+      mode: opencode-plugin
+      root: .opencode/plugins
+      allowedExtensions: [.js, .mjs]
+    capabilities:
+      skill:
+        mode: directory-symlink
+        root: .opencode/skills
+        entry: SKILL.md
+        nameFrom: aliasOrCapabilityId
+      agent:
+        mode: directory-symlink
+        root: .opencode/agents
+        entry: AGENT.md
+        nameFrom: aliasOrCapabilityId
+      mcp:
+        mode: mcp-json-merge
+        output: .opencode/opencode.json
+        keyPath: [mcp]
+        defaults:
+          $schema: https://opencode.ai/config.json
