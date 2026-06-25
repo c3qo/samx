@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -165,7 +165,15 @@ function workspaceRootForFilteredPackage(cwd: string): string | undefined {
   return undefined;
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+const isMain = process.argv[1] && (() => {
+  try {
+    return realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
+  } catch {
+    return false;
+  }
+})();
+
+if (isMain) {
   runCli().then((exitCode) => {
     process.exitCode = exitCode;
   });
